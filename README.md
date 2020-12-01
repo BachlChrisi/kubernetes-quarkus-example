@@ -1,45 +1,51 @@
-# asciidoctor-docker-template
+# code-with-quarkus-kubernetes project
 
-## Overview
+This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
-This is a template-project for
+If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
-* generating AsciiDoc-Files to html-files and
-* deploying the html-files to gh-pages,
-* where the gh-pages are located in an branch of the repo called `gh-pages`.
+## Running the application in dev mode
 
-AsciiDoctor - the software for converting the .adoc-files to .html-files - is executed in a Docker container.
-So you have nothing to install on your local machine, except Docker
-
-## Option 1: Run script outside Docker - in your host OS
-
-Two scripts are available:
-
-* `build-html-docker.sh` -> builds the .html-pages in the folder gh-pages
-* `publish-gh-pages.sh` -> builds and deploys the gh-pages
-
-additionally is a script `build-pdf-docker.sh` for creating a pdf document.
-
-
-## Option 2: [preferred] Run script inside Docker-container
-
-* First create a `.env`-file with
+You can run your application in dev mode that enables live coding using:
+```shell script
+./mvnw compile quarkus:dev
 ```
-GIT_GLOBAL_MAIL=<your email>
-GIT_GLOBAL_USER_NAME=<your git - username>
+
+## Packaging and running the application
+
+The application can be packaged using:
+```shell script
+./mvnw package
 ```
-* Then run the script `run-inside-docker.sh`.
-* The url of the created gh-page will be displayed. 
+It produces the `code-with-quarkus-kubernetes-1.0.0-SNAPSHOT-runner.jar` file in the `/target` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
 
-## How to use Asciidoctor
+If you want to build an _über-jar_, execute the following command:
+```shell script
+./mvnw package -Dquarkus.package.type=uber-jar
+```
 
-Download the latest [release](https://github.com/htl-leonding-college/asciidoctor-docker-template/releases) in your project and run the shell-scripts.
+The application is now runnable using `java -jar target/code-with-quarkus-kubernetes-1.0.0-SNAPSHOT-runner.jar`.
 
-## Demo Documents
+## Creating a native executable
 
-You can find demo documents in the `asciidocs.demo`-folder:
+You can create a native executable using: 
+```shell script
+./mvnw package -Pnative
+```
 
-- System Specification (Pflichtenheft)
-- Minutes of Meeting
-- some additional demos
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+```shell script
+./mvnw package -Pnative -Dquarkus.native.container-build=true
+```
 
+You can then execute your native executable with: `./target/code-with-quarkus-kubernetes-1.0.0-SNAPSHOT-runner`
+
+If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
+
+# Config example
+
+<p>This example displays mach speed in your favourite unit, depending on the specified Quarkus configuration.</p>
+<p>The Quarkus configuration is located in: <code>src/main/resources/application.yml</code></p>
+<p><b>Supersonic!</b></p>
+Guide: https://quarkus.io/guides/config#yaml
